@@ -1,4 +1,4 @@
-;;; kakoune-utils.el --- Utilities for kakoune.el
+;;; kakoune-utils.el --- Utilities for kakoune.el -*- lexical-binding: t; -*-
 
 ;; Author: Joseph Morag <jm4157@columbia.edu>
 ;;; Commentary:
