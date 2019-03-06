@@ -1,5 +1,12 @@
 * kakoune.el
-A very simple simulation of kakoune inside of emacs. Most of the heavy lifting is provided by [[https://github.com/Kungsgeten/ryo-modal][ryo-modal-mode]], [[https://github.com/magnars/multiple-cursors.el][multiple-cursors.el]], and [[https://github.com/magnars/expand-region.el][expand-region]].
+A very simple simulation of kakoune inside of emacs. Most of the heavy lifting is provided by [[https://github.com/Kungsgeten/ryo-modal][ryo-modal-mode]], [[https://github.com/magnars/multiple-cursors.el][multiple-cursors.el]], and [[https://github.com/magnars/expand-region.el][expand-region]]. For extended customization, it is recommended that you install these packages and customize their interfaces directly.
 
+** Installation
+   =use-package= users can simply call
+#+BEGIN_SRC elisp
+(use-package kakoune
+  :ensure t)
+#+END_SRC
+Otherwise, you can manually add kakoune.el to your load-path and call =(require 'path/to/kakoune.el)=. 
 ** Goals
-   This is not meant to be a feature-complete emulation of kakoune, like evil is to vim. Evil is a massive undertaking, which reimplements a huge number of editing primitives from scratch. By contrast, kakoune.el uses emacs's native behavior wherever possible. In particular, it binds absolutely no keys in "insert mode." You'll have to bind one yourself to ryo-modal-mode.
+   This is not meant to be a feature-complete emulation of kakoune, like evil is to vim. Evil is a massive undertaking, which reimplements a huge number of editing primitives from scratch. By contrast, kakoune.el uses emacs's native behavior wherever possible. In particular, it binds absolutely no keys in "insert mode," letting you gradually adjust to "normal mode" at your own pace. To actually access normal mode, you can either call =(ryo-modal-mode)= with =M-x=, or bind a key globally. For the true modal experience: =(global-set-key (kbd "<escape>") 'ryo-modal-mode)=.
