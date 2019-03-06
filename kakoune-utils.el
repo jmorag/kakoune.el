@@ -173,3 +173,5 @@ but I like this behavior better."
           (goto-char end))
         (mc/maybe-multiple-cursors-mode)
         ))))
+
+(provide 'kakoune-utils)
