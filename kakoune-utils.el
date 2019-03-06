@@ -163,8 +163,9 @@ but I like this behavior better."
 (require 'multiple-cursors)
 ;; Until this function is accepted upstream, we inline it here
 (defun mc/split-region (beg end search)
-  "Split region each time SEARCH occurs in the buffer.
- This can be thought of as an inverse to `mc/mark-all-in-region'."
+  "Split region each time SEARCH occurs between BEG and END.
+
+This can be thought of as an inverse to `mc/mark-all-in-region'."
   (interactive "r\nsSplit on: ")
   (let ((case-fold-search nil))
     (if (string= search "")
