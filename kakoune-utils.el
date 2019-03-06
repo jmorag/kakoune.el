@@ -6,20 +6,27 @@
 
 ;;; Code:
 
-(defun ryo-enter () (interactive) (ryo-modal-mode +1))
-(defun ryo-leave () (interactive) (ryo-modal-mode -1))
-(defun ryo-tbd () (interactive) (message "Key not assigned"))
-(defun set-mark-if-inactive () (interactive)
+(defun ryo-enter () "Enter normal mode."
+       (interactive) (ryo-modal-mode +1))
+(defun ryo-leave () "Return to insert mode."
+       (interactive) (ryo-modal-mode -1))
+(defun set-mark-if-inactive () "Set the mark if it isn't active."
+       (interactive)
        (unless (use-region-p) (set-mark (point))))
-(defun set-mark-here () (interactive) (set-mark (point)))
-(defun unset-mark () (interactive) (deactivate-mark))
+(defun set-mark-here () "Set the mark at the location of the point."
+       (interactive) (set-mark (point)))
+(defun unset-mark () "Deactivate the mark."
+       (interactive) (deactivate-mark))
 
 (defun backward-same-syntax (count)
+  "Move backward COUNT times by same syntax blocks."
   (interactive "p")
   (forward-same-syntax (- count)))
 
-(defvar kak/last-t-or-f ?f "Using t or f command sets this variable")
-(defvar kak/last-char-selected-to " " "kak/select-to-char updates this variable")
+(defvar kak/last-t-or-f ?f
+  "Using t or f command sets this variable.")
+(defvar kak/last-char-selected-to " "
+  "This variable is updated by kak/select-to-char.")
 
 (defun kak/select-up-to-char (arg char)
   "Select up to, but not including ARGth occurrence of CHAR.
@@ -53,7 +60,7 @@ Ignores CHAR at point."
       (point))))
 
 (defun kak/select-again (&optional count)
-  "Expand the selection to whatever the last 't' command was."
+  "Expand the selection COUNT times to whatever the last 't' command was."
   (interactive "p")
   (if (eq kak/last-t-or-f ?t)
       (kak/select-up-to-char count kak/last-char-selected-to)
@@ -127,12 +134,14 @@ but I like this behavior better."
 	   (yank))))
 
 (defun kak/o (count)
+  "Open COUNT lines under the cursor and go into insert mode."
   (interactive "p")
   (end-of-line)
   (dotimes (_ count)
     (electric-newline-and-maybe-indent)))
 
 (defun kak/O (count)
+  "Open COUNT lines above the cursor and go into insert mode."
   (interactive "p")
   (beginning-of-line)
   (dotimes (_ count)
@@ -144,7 +153,7 @@ but I like this behavior better."
   (interactive) (join-line 1))
 
 (defun kak/Y (count)
-  "Copy to the end of the line"
+  "Copy to the end of COUNT lines."
   (interactive "p")
   (save-excursion
     (let ((cur (point)))
@@ -175,3 +184,4 @@ but I like this behavior better."
         ))))
 
 (provide 'kakoune-utils)
+;;; kakoune-utils.el ends here
