@@ -69,7 +69,6 @@
  ("." kak/select-again :first '(set-mark-if-inactive))
  (";" deactivate-mark)
  ("M-;" exchange-point-and-mark)
- ("*" ryo-tbd)
  ("`" kak/downcase)
  ("~" kak/upcase)
  ("%" mark-whole-buffer)
