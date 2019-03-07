@@ -66,7 +66,6 @@
  ("X" kak/X)
  ("y" kill-ring-save)
  ("Y" kak/Y)
- ("Z" ryo-tbd)
  ("." kak/select-again :first '(set-mark-if-inactive))
  (";" deactivate-mark)
  ("M-;" exchange-point-and-mark)
