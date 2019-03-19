@@ -14,6 +14,7 @@ Once this package hopefully makes its way to MELPA, the =straight= argument will
 - The 'v' family of commands is not implemented here. By default, 'v' is bound to =expand-region=, which I personally find vastly more useful.
 - Searching is very different. A cursory glance at evil's =evil-search-forward= function suggests that implementing a search model where 'n' and 'N' take you forwards and backwards in the search ring while not in =isearch-mode= is non-trivial. I just use emacs's native incremental search with =C-s= and =C-r=. If I'm wrong about getting 'n' and 'N' functionality being difficult, though, please let me know.
 - This package also includes a couple bindings from =evil-unimpaired= and =evil-exchange= that aren't present in the original.
+- 'q' and 'Q' don't toggle and execute macros. [[https://www.emacswiki.org/emacs/KeyboardMacros][This emacswiki article]] seems to suggest that it's possible to have one key start and end a macro, but it's been buggy in my experience, so I just use the default =C-x (= and friends.   
 - I was never a full time Kakoune user, so there will certainly be many other small things that aren't covered here. Please open issues or PR's if you feel that including omissions would be useful to you or others.
 ** Configuration
 
