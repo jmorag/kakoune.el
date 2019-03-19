@@ -13,6 +13,8 @@
 
 ;;; Code:
 (require 'kakoune-utils)
+(require 'kakoune-exchange)
+(require 'kakoune-unimpaired)
 (require 'ryo-modal)
 (require 'expand-region)
 (require 'multiple-cursors)
@@ -83,6 +85,7 @@
  ("} ]" forward-paragraph :first '(set-mark-if-inactive))
  )
 
+;; Numeric arguments
 (ryo-modal-keys  ("0" "M-0" :norepeat t)
                  ("1" "M-1" :norepeat t)
                  ("2" "M-2" :norepeat t)
@@ -94,6 +97,14 @@
                  ("8" "M-8" :norepeat t)
                  ("9" "M-9" :norepeat t)
                  ("-" "M--" :norepeat t))
+
+;; Unimpaired-like functionality
+(ryo-modal-keys ("[" (("SPC" kak/insert-line-above)
+                      ("b" previous-buffer)
+                      ("p" kak/paste-above)))
+                ("]" (("SPC" kak/insert-line-below)
+                      ("b" next-buffer)
+                      ("p" kak/paste-below))))
 
 ;; Region selectors
 (ryo-modal-keys
