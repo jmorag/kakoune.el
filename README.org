@@ -22,47 +22,43 @@ The following is my entire configuration that I use every day with respect to ov
 #+BEGIN_SRC elisp
 (use-package kakoune
   :straight (kakoune :host github :repo "jmorag/kakoune.el")
-  :demand t
   ;; fd to escape insert mode is something I picked up from trying Spacemacs and can't shake
   :chords ("fd" . ryo-enter)
   ;; Having a non-chord way to escape is important, since key-chords don't work in macros
   :bind ("C-z" . ryo-modal-mode)
+  :hook (after-init . my/kakoune-setup)
   :config
-  (require 'kakoune)
-  ;; Bar cursor in insert mode, block in normal mode
-  (setq-default cursor-type '(bar . 1))
-  (setq ryo-modal-cursor-type 'box)
-  ;; Start in normal mode when entering prog-mode buffers
-  (add-hook 'prog-mode-hook #'ryo-enter)
-  ;; This gets you spacemacs-esque SPC h help mnemonics
-  (define-key ryo-modal-mode-map (kbd "SPC h") 'help-command)
-  ;; Access all C-x bindings easily
-  (define-key ryo-modal-mode-map (kbd "z") ctl-x-map)
-  ;; I dislike the default kakoune behavior of ;
-  (ryo-modal-unset-key ";")
-  ;; Most of these aren't defaults since they're different from kakoune.
-  ;; The exception is C-u and C-d, which do scroll. They're not included by default since
-  ;; C-u is a very, very important emacs key, and binding it to scroll should be opt-in,
-  ;; not opt-out.
-  (ryo-modal-keys ("," save-buffer)
-                  ("P" yank-pop)
-                  ("m" mc/mark-next-like-this)
-                  ("M" mc/skip-to-next-like-this)
-                  ("n" mc/mark-previous-like-this)
-                  ("N" mc/skip-to-previous-like-this)
-                  ("*" mc/mark-all-like-this)
-                  ("C-v" set-rectangular-region-anchor)
-                  ("M-s" mc/split-region)
-                  (";" (("q" delete-window)
-                        ("v" split-window-horizontally)
-                        ("s" split-window-vertically)
-                        ("i" goto-init-file)))
-                  ("C-h" windmove-left)
-                  ("C-j" windmove-down)
-                  ("C-k" windmove-up)
-                  ("C-l" windmove-right)
-                  ("C-u" scroll-down-command :first '(deactivate-mark))
-                  ("C-d" scroll-up-command :first '(deactivate-mark))))
+  (defun my/kakoune-setup ()
+      "Call kak/setup-keybinds and then add some personal config."
+      (kak/setup-keybinds)
+      (setq ryo-modal-cursor-type 'box)
+      (add-hook 'prog-mode-hook #'ryo-enter)
+      (define-key ryo-modal-mode-map (kbd "SPC h") 'help-command)
+      ;; Access all C-x bindings easily
+      (define-key ryo-modal-mode-map (kbd "z") ctl-x-map)
+      ;; I dislike the default kakoune behavior of ;
+      (ryo-modal-unset-key ";")
+      (ryo-modal-keys
+       ("," save-buffer)
+       ("P" counsel-yank-pop)
+       ("m" mc/mark-next-like-this)
+       ("M" mc/skip-to-next-like-this)
+       ("n" mc/mark-previous-like-this)
+       ("N" mc/skip-to-previous-like-this)
+       ("M-m" mc/edit-lines)
+       ("*" mc/mark-all-like-this)
+       ("v" er/expand-region)
+       ("C-v" set-rectangular-region-anchor)
+       ("M-s" mc/split-region)
+       (";" (("q" delete-window)
+             ("v" split-window-horizontally)
+             ("s" split-window-vertically)))
+       ("C-h" windmove-left)
+       ("C-j" windmove-down)
+       ("C-k" windmove-up)
+       ("C-l" windmove-right)
+       ("C-u" scroll-down-command :first '(deactivate-mark))
+       ("C-d" scroll-up-command :first '(deactivate-mark)))))
 
 ;; This overrides the default mark-in-region with a prettier-looking one,
 ;; and provides a couple extra commands
@@ -94,7 +90,6 @@ The following is my entire configuration that I use every day with respect to ov
 
 #+END_SRC
 It's kind of a lot, but it does provide a good example of how to override defaults and bind your own keys to your own commands. I use this daily, along with the rest of the commands provided by the package, and am very happy with it.
-
 
 ** Known bugs
 - There will be many commands that, when run for the first time with multiple active selections, will prompt you "Run <command> for all cursors? (y/n)." Hitting 'y' will add the command to an .mc-lists file in your .emacs.d and save your preference. There should be a way to add all the kak/* functions to this list by default, but because ryo adds hashes to the beginnings of commands, this isn't as easy as it could be. This problem is usually just a one-time annoyance, but it can be irritating. I would gladly accept a PR to fix it.
