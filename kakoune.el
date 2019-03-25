@@ -77,7 +77,6 @@
    ("y" kill-ring-save)
    ("Y" kak/Y)
    ("." kak/select-again :first '(kak/set-mark-if-inactive))
-   (";" kak/deactivate-mark)
    ("M-;" exchange-point-and-mark)
    ("`" kak/downcase)
    ("~" kak/upcase)

@@ -15,6 +15,7 @@ Once this package hopefully makes its way to MELPA, the =straight= argument will
 - Searching is very different. A cursory glance at evil's =evil-search-forward= function suggests that implementing a search model where 'n' and 'N' take you forwards and backwards in the search ring while not in =isearch-mode= is non-trivial. I just use emacs's native incremental search with =C-s= and =C-r=. If I'm wrong about getting 'n' and 'N' functionality being difficult, though, please let me know.
 - This package also includes a couple bindings from =evil-unimpaired= and =evil-exchange= that aren't present in the original.
 - 'q' and 'Q' don't toggle and execute macros. [[https://www.emacswiki.org/emacs/KeyboardMacros][This emacswiki article]] seems to suggest that it's possible to have one key start and end a macro, but it's been buggy in my experience, so I just use the default =C-x (= and friends.   
+- ';' doesn't shrink regions by default. This is simply my personal preference. You can get this behavior with =(ryo-modal-key ";" 'kak/deactivate-mark)=.
 - I was never a full time Kakoune user, so there will certainly be many other small things that aren't covered here. Please open issues or PR's if you feel that including omissions would be useful to you or others.
 ** Configuration
 
@@ -94,3 +95,4 @@ It's kind of a lot, but it does provide a good example of how to override defaul
 ** Known bugs
 - There will be many commands that, when run for the first time with multiple active selections, will prompt you "Run <command> for all cursors? (y/n)." Hitting 'y' will add the command to an .mc-lists file in your .emacs.d and save your preference. There should be a way to add all the kak/* functions to this list by default, but because ryo adds hashes to the beginnings of commands, this isn't as easy as it could be. This problem is usually just a one-time annoyance, but it can be irritating. I would gladly accept a PR to fix it.
 - Certain commands, like =kak/replace-char= and =kak/select-to-char= prompt for input once per cursor, instead of using the first input for each one. This behavior is unlike Kakoune's but shouldn't be. Fixing it shouldn't be too difficult, but requires more knowledge of =multiple-cursors.el='s implementation than I have.
+- When you first download this package, it is possible that non-primary cursors will have a weird color in insert mode. I have no idea why that is, but restarting emacs should take care of it.  
