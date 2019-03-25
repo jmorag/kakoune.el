@@ -37,8 +37,6 @@ The following is my entire configuration that I use every day with respect to ov
       (define-key ryo-modal-mode-map (kbd "SPC h") 'help-command)
       ;; Access all C-x bindings easily
       (define-key ryo-modal-mode-map (kbd "z") ctl-x-map)
-      ;; I dislike the default kakoune behavior of ;
-      (ryo-modal-unset-key ";")
       (ryo-modal-keys
        ("," save-buffer)
        ("P" counsel-yank-pop)
