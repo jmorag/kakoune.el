@@ -5,6 +5,7 @@
 ;; (kak/exchange) and (kak/exchange-cancel)
 
 ;;; Code:
+(require 'cl-lib)
 
 (defcustom kak/exchange-highlight-face 'highlight
   "Face used to highlight marked area."

@@ -1,4 +1,4 @@
-;;; kakoune-unimpaired.el --- Utilities for kakoune.el -*- lexical-binding: t; -*-
+;;; kakoune-unimpaired.el --- "Unimpaired" plugin for kakoune.el -*- lexical-binding: t; -*-
 
 ;; Author: Joseph Morag <jm4157@columbia.edu>
 ;;; Commentary:

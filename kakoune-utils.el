@@ -5,20 +5,23 @@
 ;; Provides utility functions for kakoune.el
 
 ;;; Code:
-
-(defun ryo-enter () "Enter normal mode."
-       (interactive) (ryo-modal-mode +1))
-(defun ryo-leave () "Return to insert mode."
-       (interactive) (ryo-modal-mode -1))
-(defun set-mark-if-inactive () "Set the mark if it isn't active."
+(defun kak/insert-mode () "Return to insert mode."
+       (interactive)
+       (ryo-modal-mode 0))
+(defun kak/set-mark-if-inactive () "Set the mark if it isn't active."
        (interactive)
        (unless (use-region-p) (set-mark (point))))
-(defun set-mark-here () "Set the mark at the location of the point."
+(defun kak/set-mark-here () "Set the mark at the location of the point."
        (interactive) (set-mark (point)))
-(defun unset-mark () "Deactivate the mark."
-       (interactive) (deactivate-mark))
+(defun kak/deactivate-mark ()
+  "Deactivate the mark.
 
-(defun backward-same-syntax (count)
+For some reason, just calling (deactivate-mark) inside of a (ryo-modal-keys
+call doesn't work."
+  (interactive)
+  (deactivate-mark))
+
+(defun kak/backward-same-syntax (count)
   "Move backward COUNT times by same syntax blocks."
   (interactive "p")
   (forward-same-syntax (- count)))
