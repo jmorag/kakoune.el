@@ -16,6 +16,7 @@ Once this package hopefully makes its way to MELPA, the =straight= argument will
 - This package also includes a couple bindings from =evil-unimpaired= and =evil-exchange= that aren't present in the original.
 - 'q' and 'Q' don't toggle and execute macros. [[https://www.emacswiki.org/emacs/KeyboardMacros][This emacswiki article]] seems to suggest that it's possible to have one key start and end a macro, but it's been buggy in my experience, so I just use the default =C-x (= and friends.   
 - ';' doesn't shrink regions by default. This is simply my personal preference. You can get this behavior with =(ryo-modal-key ";" 'kak/deactivate-mark)=.
+- '>' and '<' behave normally on when the region is active, but when given a count when the region is inactive, they indent that many lines instead of indenting the current line that many times. This is also my personal preference, but if anyone wants kakoune's default behavior for this, open an issue and I'll change it.  
 - I was never a full time Kakoune user, so there will certainly be many other small things that aren't covered here. Please open issues or PR's if you feel that including omissions would be useful to you or others.
 ** Configuration
 
