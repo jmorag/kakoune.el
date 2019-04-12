@@ -86,6 +86,8 @@
    ("{ [" backward-paragraph :first '(kak/set-mark-if-inactive))
    ("] ]" forward-paragraph :first '(kak/set-mark-here))
    ("} ]" forward-paragraph :first '(kak/set-mark-if-inactive))
+   (">" kak/indent-right)
+   ("<" kak/indent-left)
 
    ;; Numeric arguments
    ("0" "M-0" :norepeat t)

@@ -163,6 +163,28 @@ but I like this behavior better."
       (move-end-of-line count)
       (kill-ring-save cur (point)))))
 
+(defun kak/indent-right (count)
+  "Indent the region or COUNT lines right to tab stop."
+  (interactive "p")
+  (if (use-region-p)
+      (progn (indent-rigidly-right-to-tab-stop (region-beginning) (region-end))
+             (setq deactivate-mark nil))
+    (let ((beg (save-excursion (beginning-of-line) (point)))
+          (end (save-excursion (forward-line count) (point))))
+      (indent-rigidly-right-to-tab-stop beg end))
+    ))
+
+(defun kak/indent-left (count)
+  "Indent the region or COUNT lines left to tab stop."
+  (interactive "p")
+  (if (use-region-p)
+      (progn (indent-rigidly-left-to-tab-stop (region-beginning) (region-end))
+             (setq deactivate-mark nil))
+    (let ((beg (save-excursion (beginning-of-line) (point)))
+          (end (save-excursion (forward-line count) (point))))
+      (indent-rigidly-left-to-tab-stop beg end))
+    ))
+
 (require 'multiple-cursors)
 ;; Until this function is accepted upstream, we inline it here
 (defun mc/split-region (beg end search)
