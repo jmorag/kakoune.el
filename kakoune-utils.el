@@ -185,6 +185,10 @@ but I like this behavior better."
       (indent-rigidly-left-to-tab-stop beg end))
     ))
 
+(defun kak/gg (count)
+  "Go to the beginning of the buffer or the COUNTth line"
+  (interactive "p") (if count (goto-line count) (beginning-of-buffer)))
+
 (require 'multiple-cursors)
 ;; Until this function is accepted upstream, we inline it here
 (defun mc/split-region (beg end search)
