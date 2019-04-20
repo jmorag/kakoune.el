@@ -33,6 +33,8 @@
    ("C" kill-line :exit t)
    ("d" kak/d)
    ("D" kill-line)
+   ("e" forward-word :first '(kak/set-mark-here))
+   ("E" forward-word :first '(kak/set-mark-if-inactive))
    ("f" kak/select-to-char :first '(kak/set-mark-here))
    ("F" kak/select-to-char :first '(kak/set-mark-if-inactive))
    ("g" (("h" beginning-of-line)
