@@ -2,51 +2,54 @@
 ;; Author: Joseph Morag <jm4157@columbia.edu>
 ;;; Commentary:
 ;; A ripoff of evil-exchange https://github.com/Dewdrops/evil-exchange, which is a port of Tim Pope's vim-exchange. Provides two commands,
-;; (kak/exchange) and (kak/exchange-cancel)
+;; (kakoune-exchange) and (kakoune-exchange-cancel)
 
 ;;; Code:
 (require 'cl-lib)
+(require 'ryo-modal)
+(require 'expand-region)
+(require 'multiple-cursors)
 
-(defcustom kak/exchange-highlight-face 'highlight
+(defcustom kakoune-exchange-highlight-face 'highlight
   "Face used to highlight marked area."
   :type 'sexp
-  :group 'kak/exchange)
+  :group 'kakoune-exchange)
 
-(defvar kak/exchange--position nil "Text position which will be exchanged.")
+(defvar kakoune-exchange--position nil "Text position which will be exchanged.")
 
-(defvar kak/exchange--overlays nil "Overlays used to highlight marked area.")
+(defvar kakoune-exchange--overlays nil "Overlays used to highlight marked area.")
 
-(defun kak/exchange--highlight (beg end)
+(defun kakoune-exchange--highlight (beg end)
   (let ((o (make-overlay beg end nil t nil)))
-    (overlay-put o 'face kak/exchange-highlight-face)
-    (add-to-list 'kak/exchange--overlays o)))
+    (overlay-put o 'face kakoune-exchange-highlight-face)
+    (add-to-list 'kakoune-exchange--overlays o)))
 
-(defun kak/exchange--clean ()
-  (setq kak/exchange--position nil)
-  (mapc 'delete-overlay kak/exchange--overlays)
-  (setq kak/exchange--overlays nil))
+(defun kakoune-exchange--clean ()
+  (setq kakoune-exchange--position nil)
+  (mapc 'delete-overlay kakoune-exchange--overlays)
+  (setq kakoune-exchange--overlays nil))
 
-(defun kak/exchange (beg end)
+(defun kakoune-exchange (beg end)
   "Exchange two regions."
   (interactive "r")
   (let ((beg-marker (copy-marker beg t))
         (end-marker (copy-marker end nil)))
-    (if (null kak/exchange--position)
-        ;; call without kak/exchange--position set: store region
+    (if (null kakoune-exchange--position)
+        ;; call without kakoune-exchange--position set: store region
         (progn
-          (setq kak/exchange--position (list (current-buffer) beg-marker end-marker))
+          (setq kakoune-exchange--position (list (current-buffer) beg-marker end-marker))
           ;; highlight area marked to exchange
-          (kak/exchange--highlight beg end))
+          (kakoune-exchange--highlight beg end))
       ;; secondary call: do exchange
       (cl-destructuring-bind
-          (orig-buffer orig-beg orig-end) kak/exchange--position
-        (kak/exchange--do-swap (current-buffer) orig-buffer
-                                beg-marker end-marker
-                                orig-beg orig-end
-                                #'delete-and-extract-region #'insert)))))
+          (orig-buffer orig-beg orig-end) kakoune-exchange--position
+        (kakoune-exchange--do-swap (current-buffer) orig-buffer
+                                   beg-marker end-marker
+                                   orig-beg orig-end
+                                   #'delete-and-extract-region #'insert)))))
 
-(defun kak/exchange--do-swap (curr-buffer orig-buffer curr-beg curr-end orig-beg
-                                           orig-end extract-fn insert-fn)
+(defun kakoune-exchange--do-swap (curr-buffer orig-buffer curr-beg curr-end orig-beg
+                                              orig-end extract-fn insert-fn)
   "This function does the real exchange work. Here's the detailed steps:
 1. call extract-fn with orig-beg and orig-end to extract orig-text.
 2. call extract-fn with curr-beg and curr-end to extract curr-text.
@@ -59,7 +62,7 @@ before step 3. Because curr-beg is a marker which moves after insertion, the
 insertion in step 3 will push it to the end of the newly inserted text,
 thus resulting incorrect behaviour.
 To fix this edge case, we swap two extracted texts before step 3 to
-effectively reverse the (problematic) order of two `kak/exchange' calls."
+effectively reverse the (problematic) order of two `kakoune-exchange' calls."
   (if (eq curr-buffer orig-buffer)
       ;; in buffer exchange
       (let ((adjacent  (equal (marker-position orig-beg) (marker-position curr-end)))
@@ -83,14 +86,14 @@ effectively reverse the (problematic) order of two `kak/exchange' calls."
           (funcall insert-fn curr-text))
         (goto-char curr-beg)
         (funcall insert-fn orig-text))))
-  (kak/exchange--clean))
+  (kakoune-exchange--clean))
 
-(defun kak/exchange-cancel ()
+(defun kakoune-exchange-cancel ()
   "Cancel current pending exchange."
   (interactive)
-  (if (null kak/exchange--position)
+  (if (null kakoune-exchange--position)
       (message "No pending exchange")
-    (kak/exchange--clean)
+    (kakoune-exchange--clean)
     (message "Exchange cancelled")))
 
 (provide 'kakoune-exchange)

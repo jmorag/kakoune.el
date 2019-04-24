@@ -5,22 +5,26 @@
 ;; Provides a couple functions similar to Tim Pope's vim-unimpaired package
 
 ;;; Code:
+(require 'cl-lib)
+(require 'ryo-modal)
+(require 'expand-region)
+(require 'multiple-cursors)
 
-(defun kak/insert-line-below (count)
+(defun kakoune-insert-line-below (count)
   "Insert COUNT empty lines below the current line."
   (interactive "p")
   (save-excursion
     (end-of-line)
     (open-line count)))
 
-(defun kak/insert-line-above (count)
+(defun kakoune-insert-line-above (count)
   "Insert COUNT empty lines above the current line."
   (interactive "p")
   (save-excursion
     (end-of-line 0)
     (open-line count)))
 
-(defun kak/paste-above (count)
+(defun kakoune-paste-above (count)
   "Paste (yank) COUNT times above the current line."
   (interactive "p")
   (save-excursion
@@ -28,7 +32,7 @@
 	     (newline)
 	     (yank))))
 
-(defun kak/paste-below (count)
+(defun kakoune-paste-below (count)
   "Paste (yank) COUNT times below the current line."
   (interactive "p")
   (save-excursion

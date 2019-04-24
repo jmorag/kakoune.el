@@ -5,15 +5,20 @@
 ;; Provides utility functions for kakoune.el
 
 ;;; Code:
-(defun kak/insert-mode () "Return to insert mode."
+(require 'cl-lib)
+(require 'ryo-modal)
+(require 'expand-region)
+(require 'multiple-cursors)
+
+(defun kakoune-insert-mode () "Return to insert mode."
        (interactive)
        (ryo-modal-mode 0))
-(defun kak/set-mark-if-inactive () "Set the mark if it isn't active."
+(defun kakoune-set-mark-if-inactive () "Set the mark if it isn't active."
        (interactive)
        (unless (use-region-p) (set-mark (point))))
-(defun kak/set-mark-here () "Set the mark at the location of the point."
+(defun kakoune-set-mark-here () "Set the mark at the location of the point."
        (interactive) (set-mark (point)))
-(defun kak/deactivate-mark ()
+(defun kakoune-deactivate-mark ()
   "Deactivate the mark.
 
 For some reason, just calling (deactivate-mark) inside of a (ryo-modal-keys
@@ -21,24 +26,24 @@ call doesn't work."
   (interactive)
   (deactivate-mark))
 
-(defun kak/backward-same-syntax (count)
+(defun kakoune-backward-same-syntax (count)
   "Move backward COUNT times by same syntax blocks."
   (interactive "p")
   (forward-same-syntax (- count)))
 
-(defvar kak/last-t-or-f ?f
+(defvar kakoune-last-t-or-f ?f
   "Using t or f command sets this variable.")
-(defvar kak/last-char-selected-to " "
-  "This variable is updated by kak/select-to-char.")
+(defvar kakoune-last-char-selected-to " "
+  "This variable is updated by kakoune-select-to-char.")
 
-(defun kak/select-up-to-char (arg char)
+(defun kakoune-select-up-to-char (arg char)
   "Select up to, but not including ARGth occurrence of CHAR.
 Case is ignored if `case-fold-search' is non-nil in the current buffer.
 Goes backward if ARG is negative; error if CHAR not found.
 Ignores CHAR at point."
   (interactive "p\ncSelect up to char: ")
-  (setq kak/last-char-selected-to char)
-  (setq kak/last-t-or-f ?t)
+  (setq kakoune-last-char-selected-to char)
+  (setq kakoune-last-t-or-f ?t)
   (let ((direction (if (>= arg 0) 1 -1)))
     (progn
       (forward-char direction)
@@ -47,14 +52,14 @@ Ignores CHAR at point."
 	(backward-char direction))
       (point))))
 
-(defun kak/select-to-char (arg char)
+(defun kakoune-select-to-char (arg char)
   "Select up to, and including ARGth occurrence of CHAR.
 Case is ignored if `case-fold-search' is non-nil in the current buffer.
 Goes backward if ARG is negative; error if CHAR not found.
 Ignores CHAR at point."
   (interactive "p\ncSelect to char: ")
-  (setq kak/last-char-selected-to char)
-  (setq kak/last-t-or-f ?f)
+  (setq kakoune-last-char-selected-to char)
+  (setq kakoune-last-t-or-f ?f)
   (let ((direction (if (>= arg 0) 1 -1)))
     (progn
       (forward-char direction)
@@ -62,14 +67,14 @@ Ignores CHAR at point."
 	  (search-forward (char-to-string char) nil nil arg))
       (point))))
 
-(defun kak/select-again (&optional count)
+(defun kakoune-select-again (&optional count)
   "Expand the selection COUNT times to whatever the last 't' command was."
   (interactive "p")
-  (if (eq kak/last-t-or-f ?t)
-      (kak/select-up-to-char count kak/last-char-selected-to)
-    (kak/select-to-char count kak/last-char-selected-to)))
+  (if (eq kakoune-last-t-or-f ?t)
+      (kakoune-select-up-to-char count kakoune-last-char-selected-to)
+    (kakoune-select-to-char count kakoune-last-char-selected-to)))
 
-(defun kak/x (count)
+(defun kakoune-x (count)
   "Select COUNT lines from the current line.
 
 Note that kakoune's x doesn't behave exactly like this,
@@ -79,27 +84,27 @@ but I like this behavior better."
   (set-mark (point))
   (forward-line count))
 
-(defun kak/X (count)
+(defun kakoune-X (count)
   "Extend COUNT lines from the current line."
   (interactive "p")
   (beginning-of-line)
   (unless (use-region-p) (set-mark (point)))
   (forward-line count))
 
-(defun kak/d (count)
+(defun kakoune-d (count)
   "Kill selected text or COUNT chars."
   (interactive "p")
   (if (use-region-p)
       (kill-region (region-beginning) (region-end))
     (delete-char count t)))
 
-(defun kak/p (count)
+(defun kakoune-p (count)
   "Yank COUNT times after the point."
   (interactive "p")
   (dotimes (_ count) (save-excursion (yank)))
   )
 
-(defun kak/downcase ()
+(defun kakoune-downcase ()
   "Downcase region."
   (interactive)
   (if (use-region-p)
@@ -107,7 +112,7 @@ but I like this behavior better."
     (downcase-region (point) (+ 1 (point)))
     ))
 
-(defun kak/upcase ()
+(defun kakoune-upcase ()
   "Upcase region."
   (interactive)
   (if (use-region-p)
@@ -115,7 +120,7 @@ but I like this behavior better."
     (upcase-region (point) (1+ (point)))
     ))
 
-(defun kak/replace-char (char)
+(defun kakoune-replace-char (char)
   "Replace selection with CHAR."
   (interactive "cReplace with char: ")
   (if (use-region-p)
@@ -127,7 +132,7 @@ but I like this behavior better."
 	   (save-excursion
 	     (insert-char char)))))
 
-(defun kak/replace-selection ()
+(defun kakoune-replace-selection ()
   "Replace selection with killed text."
   (interactive)
   (if (use-region-p)
@@ -136,14 +141,14 @@ but I like this behavior better."
     (progn (delete-region (point) (1+ (point)))
 	   (yank))))
 
-(defun kak/o (count)
+(defun kakoune-o (count)
   "Open COUNT lines under the cursor and go into insert mode."
   (interactive "p")
   (end-of-line)
   (dotimes (_ count)
     (electric-newline-and-maybe-indent)))
 
-(defun kak/O (count)
+(defun kakoune-O (count)
   "Open COUNT lines above the cursor and go into insert mode."
   (interactive "p")
   (beginning-of-line)
@@ -151,11 +156,11 @@ but I like this behavior better."
     (newline)
     (forward-line -1)))
 
-(defun kak/join ()
+(defun kakoune-join ()
   "Join the next line to the current one."
   (interactive) (join-line 1))
 
-(defun kak/Y (count)
+(defun kakoune-Y (count)
   "Copy to the end of COUNT lines."
   (interactive "p")
   (save-excursion
@@ -163,7 +168,7 @@ but I like this behavior better."
       (move-end-of-line count)
       (kill-ring-save cur (point)))))
 
-(defun kak/indent-right (count)
+(defun kakoune-indent-right (count)
   "Indent the region or COUNT lines right to tab stop."
   (interactive "p")
   (if (use-region-p)
@@ -174,7 +179,7 @@ but I like this behavior better."
       (indent-rigidly-right-to-tab-stop beg end))
     ))
 
-(defun kak/indent-left (count)
+(defun kakoune-indent-left (count)
   "Indent the region or COUNT lines left to tab stop."
   (interactive "p")
   (if (use-region-p)
@@ -185,11 +190,10 @@ but I like this behavior better."
       (indent-rigidly-left-to-tab-stop beg end))
     ))
 
-(defun kak/gg (count)
+(defun kakoune-gg (count)
   "Go to the beginning of the buffer or the COUNTth line"
   (interactive "p") (if count (goto-line count) (beginning-of-buffer)))
 
-(require 'multiple-cursors)
 ;; Until this function is accepted upstream, we inline it here
 (defun mc/split-region (beg end search)
   "Split region each time SEARCH occurs between BEG and END.
