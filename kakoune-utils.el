@@ -13,11 +13,14 @@
 (defun kakoune-insert-mode () "Return to insert mode."
        (interactive)
        (ryo-modal-mode 0))
+
 (defun kakoune-set-mark-if-inactive () "Set the mark if it isn't active."
        (interactive)
        (unless (use-region-p) (set-mark (point))))
+
 (defun kakoune-set-mark-here () "Set the mark at the location of the point."
        (interactive) (set-mark (point)))
+
 (defun kakoune-deactivate-mark ()
   "Deactivate the mark.
 
@@ -33,7 +36,8 @@ call doesn't work."
 
 (defvar kakoune-last-t-or-f ?f
   "Using t or f command sets this variable.")
-(defvar kakoune-last-char-selected-to " "
+
+(defvar-local kakoune-last-char-selected-to " "
   "This variable is updated by kakoune-select-to-char.")
 
 (defun kakoune-select-up-to-char (arg char)
@@ -45,12 +49,11 @@ Ignores CHAR at point."
   (setq kakoune-last-char-selected-to char)
   (setq kakoune-last-t-or-f ?t)
   (let ((direction (if (>= arg 0) 1 -1)))
-    (progn
-      (forward-char direction)
-      (unwind-protect
-	  (search-forward (char-to-string char) nil nil arg)
-	(backward-char direction))
-      (point))))
+    (forward-char direction)
+    (unwind-protect
+	    (search-forward (char-to-string char) nil nil arg)
+	  (backward-char direction))
+    (point)))
 
 (defun kakoune-select-to-char (arg char)
   "Select up to, and including ARGth occurrence of CHAR.
@@ -61,11 +64,10 @@ Ignores CHAR at point."
   (setq kakoune-last-char-selected-to char)
   (setq kakoune-last-t-or-f ?f)
   (let ((direction (if (>= arg 0) 1 -1)))
-    (progn
-      (forward-char direction)
-      (unwind-protect
-	  (search-forward (char-to-string char) nil nil arg))
-      (point))))
+    (forward-char direction)
+    (unwind-protect
+	    (search-forward (char-to-string char) nil nil arg))
+    (point)))
 
 (defun kakoune-select-again (&optional count)
   "Expand the selection COUNT times to whatever the last 't' command was."
@@ -101,24 +103,21 @@ but I like this behavior better."
 (defun kakoune-p (count)
   "Yank COUNT times after the point."
   (interactive "p")
-  (dotimes (_ count) (save-excursion (yank)))
-  )
+  (dotimes (_ count) (save-excursion (yank))))
 
 (defun kakoune-downcase ()
   "Downcase region."
   (interactive)
   (if (use-region-p)
       (downcase-region (region-beginning) (region-end))
-    (downcase-region (point) (+ 1 (point)))
-    ))
+    (downcase-region (point) (+ 1 (point)))))
 
 (defun kakoune-upcase ()
   "Upcase region."
   (interactive)
   (if (use-region-p)
       (upcase-region (region-beginning) (region-end))
-    (upcase-region (point) (1+ (point)))
-    ))
+    (upcase-region (point) (1+ (point)))))
 
 (defun kakoune-replace-char (char)
   "Replace selection with CHAR."
@@ -187,8 +186,7 @@ but I like this behavior better."
              (setq deactivate-mark nil))
     (let ((beg (save-excursion (beginning-of-line) (point)))
           (end (save-excursion (forward-line count) (point))))
-      (indent-rigidly-left-to-tab-stop beg end))
-    ))
+      (indent-rigidly-left-to-tab-stop beg end))))
 
 (defun kakoune-gg (count)
   "Go to the beginning of the buffer or the COUNTth line"
@@ -214,8 +212,7 @@ This can be thought of as an inverse to `mc/mark-all-in-region'."
           (push-mark (match-end 0)))
         (unless (= (point) end)
           (goto-char end))
-        (mc/maybe-multiple-cursors-mode)
-        ))))
+        (mc/maybe-multiple-cursors-mode)))))
 
 (provide 'kakoune-utils)
 ;;; kakoune-utils.el ends here

@@ -2,7 +2,7 @@
 
 ;; Author: Joseph Morag <jm4157@columbia.edu>
 ;; Version: 0.1
-;; Package-Requires: ((ryo-modal "0.4") (multiple-cursors "1.4") (expand-region "0.11.0"))
+;; Package-Requires: ((ryo-modal "0.4") (multiple-cursors "1.4") (expand-region "0.11.0") (emacs "24.3"))
 ;; MIT License
 
 ;;; Commentary:
