@@ -20,17 +20,19 @@
 (defvar kakoune-exchange--overlays nil "Overlays used to highlight marked area.")
 
 (defun kakoune-exchange--highlight (beg end)
+  "Highlight BEG to END for exchange."
   (let ((o (make-overlay beg end nil t nil)))
     (overlay-put o 'face kakoune-exchange-highlight-face)
     (add-to-list 'kakoune-exchange--overlays o)))
 
 (defun kakoune-exchange--clean ()
+  "Clean up after exchange."
   (setq kakoune-exchange--position nil)
   (mapc 'delete-overlay kakoune-exchange--overlays)
   (setq kakoune-exchange--overlays nil))
 
 (defun kakoune-exchange (beg end)
-  "Exchange two regions."
+  "Mark the region from BEG to END for exchange."
   (interactive "r")
   (let ((beg-marker (copy-marker beg t))
         (end-marker (copy-marker end nil)))
@@ -51,14 +53,17 @@
 (defun kakoune-exchange--do-swap (curr-buffer orig-buffer curr-beg curr-end orig-beg
                                               orig-end extract-fn insert-fn)
   "This function does the real exchange work. Here's the detailed steps:
-1. call extract-fn with orig-beg and orig-end to extract orig-text.
-2. call extract-fn with curr-beg and curr-end to extract curr-text.
-3. go to orig-beg and then call insert-fn with curr-text.
-4. go to curr-beg and then call insert-fn with orig-text.
+
+1. call EXTRACT-FN with ORIG-BEG and ORIG-END to extract ORIG-TEXT
+from ORIG-BUFFER.
+2. call EXTRACT-FN with CURR-BEG and CURR-END to extract CURR-TEXT
+from CURR-BUFFER.
+3. go to ORIG-BEG and then call INSERT-FN with CURR-TEXT.
+4. go to CURR-BEG and then call INSERT-FN with ORIG-TEXT.
 After step 2, the two markers of the same beg/end pair (curr or orig)
-will point to the same position. So if orig-beg points to the same position
-of curr-end initially, orig-beg and curr-beg will point to the same position
-before step 3. Because curr-beg is a marker which moves after insertion, the
+will point to the same position. So if ORIG-BEG points to the same position
+of CURR-END initially, ORIG-BEG and CURR-BEG will point to the same position
+before step 3. Because CURR-BEG is a marker which moves after insertion, the
 insertion in step 3 will push it to the end of the newly inserted text,
 thus resulting incorrect behaviour.
 To fix this edge case, we swap two extracted texts before step 3 to
