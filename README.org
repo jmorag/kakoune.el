@@ -24,12 +24,11 @@ The following is my entire configuration that I use every day with respect to ov
 #+BEGIN_SRC elisp
 (use-package kakoune
   :straight (kakoune :host github :repo "jmorag/kakoune.el")
-  ;; fd to escape insert mode is something I picked up from trying Spacemacs and can't shake
-  :chords ("fd" . ryo-enter)
   ;; Having a non-chord way to escape is important, since key-chords don't work in macros
   :bind ("C-z" . ryo-modal-mode)
   :hook (after-init . my/kakoune-setup)
   :config
+  (defun ryo-enter () "Enter normal mode" (interactive) (ryo-modal-mode 1))
   (defun my/kakoune-setup ()
       "Call kakoune-setup-keybinds and then add some personal config."
       (kakoune-setup-keybinds)

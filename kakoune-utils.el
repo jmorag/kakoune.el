@@ -175,8 +175,7 @@ but I like this behavior better."
              (setq deactivate-mark nil))
     (let ((beg (save-excursion (beginning-of-line) (point)))
           (end (save-excursion (forward-line count) (point))))
-      (indent-rigidly-right-to-tab-stop beg end))
-    ))
+      (indent-rigidly-right-to-tab-stop beg end))))
 
 (defun kakoune-indent-left (count)
   "Indent the region or COUNT lines left to tab stop."
@@ -189,8 +188,10 @@ but I like this behavior better."
       (indent-rigidly-left-to-tab-stop beg end))))
 
 (defun kakoune-gg (count)
-  "Go to the beginning of the buffer or the COUNTth line"
-  (interactive "p") (if count (goto-line count) (beginning-of-buffer)))
+  "Go to the beginning of the buffer or the COUNTth line."
+  (interactive "p")
+  (goto-char (point-min))
+  (when count (forward-line (1- count))))
 
 ;; Until this function is accepted upstream, we inline it here
 (defun mc/split-region (beg end search)

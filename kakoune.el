@@ -1,7 +1,8 @@
-;;; kakoune.el --- A simulation, but not emulation, of kakoune, in emacs -*- lexical-binding: t; -*-
+;;; kakoune.el --- A simulation, but not emulation, of kakoune -*- lexical-binding: t; -*-
 
 ;; Author: Joseph Morag <jm4157@columbia.edu>
 ;; Version: 0.1
+;; URL: https://github.com/jmorag/kakoune.el
 ;; Package-Requires: ((ryo-modal "0.4") (multiple-cursors "1.4") (expand-region "0.11.0") (emacs "24.3"))
 ;; MIT License
 
