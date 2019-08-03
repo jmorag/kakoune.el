@@ -93,6 +93,16 @@
    (">" kakoune-indent-right)
    ("<" kakoune-indent-left)
 
+   ;; Treat arrow keys the same as "hjkl"
+   ("<down>" next-line :first '(deactivate-mark))
+   ("<S-down>" next-line :first '(kakoune-set-mark-if-inactive))
+   ("<up>" previous-line :first '(deactivate-mark))
+   ("<S-up>" previous-line :first '(kakoune-set-mark-if-inactive))
+   ("<right>" forward-char :first '(deactivate-mark))
+   ("<S-right>" forward-char :first '(kakoune-set-mark-if-inactive))
+   ("<left>" backward-char :first '(deactivate-mark))
+   ("<S-left>" backward-char :first '(kakoune-set-mark-if-inactive))
+
    ;; Numeric arguments
    ("0" "M-0" :norepeat t)
    ("1" "M-1" :norepeat t)
