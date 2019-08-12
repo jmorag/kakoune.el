@@ -122,23 +122,25 @@ but I like this behavior better."
 (defun kakoune-replace-char (char)
   "Replace selection with CHAR."
   (interactive "cReplace with char: ")
-  (if (use-region-p)
-      (progn (let ((region-size (- (region-end) (region-beginning))))
-	       (delete-region (region-beginning) (region-end))
-	       (save-excursion
-		 (insert-char char region-size t))))
-    (progn (delete-region (point) (1+ (point)))
-	   (save-excursion
-	     (insert-char char)))))
+  (mc/execute-command-for-all-cursors
+   (lambda () (interactive)
+     (if (use-region-p)
+         (progn (let ((region-size (- (region-end) (region-beginning))))
+	              (delete-region (region-beginning) (region-end))
+	              (mc/save-excursion
+		           (insert-char char region-size t))))
+       (progn (delete-region (point) (1+ (point)))
+	          (mc/save-excursion
+	           (insert-char char)))))))
 
 (defun kakoune-replace-selection ()
   "Replace selection with killed text."
   (interactive)
   (if (use-region-p)
       (progn (delete-region (region-beginning) (region-end))
-	     (yank))
+	         (yank))
     (progn (delete-region (point) (1+ (point)))
-	   (yank))))
+	       (yank))))
 
 (defun kakoune-o (count)
   "Open COUNT lines under the cursor and go into insert mode."
