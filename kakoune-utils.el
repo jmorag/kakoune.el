@@ -29,6 +29,11 @@ call doesn't work."
   (interactive)
   (deactivate-mark))
 
+(defun kakoune-backward-symbol (count)
+  "Move backward COUNT times by symbol."
+  (interactive "p")
+  (forward-symbol (- count)))
+
 (defun kakoune-backward-same-syntax (count)
   "Move backward COUNT times by same syntax blocks."
   (interactive "p")

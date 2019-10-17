@@ -3,7 +3,7 @@
 ;; Author: Joseph Morag <jm4157@columbia.edu>
 ;; Version: 0.1
 ;; URL: https://github.com/jmorag/kakoune.el
-;; Package-Requires: ((ryo-modal "0.4") (multiple-cursors "1.4") (expand-region "0.11.0") (emacs "24.3"))
+;; Package-Requires: ((ryo-modal "0.4") (multiple-cursors "1.4") (expand-region "0.11.0") (emacs "25.1"))
 ;; MIT License
 
 ;;; Commentary:
@@ -25,12 +25,18 @@
 (defun kakoune-setup-keybinds ()
   "Set up default kakoune keybindings for normal mode."
   (interactive)
+  (ryo-modal-major-mode-keys
+   'prog-mode
+   ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here))
+   ("B" kakoune-backward-same-syntax :first '(kakoune-set-mark-if-inactive))
+   ("w" forward-same-syntax :first '(kakoune-set-mark-here))
+   ("W" forward-same-syntax :first '(kakoune-set-mark-if-inactive)))
   (ryo-modal-keys
    ;; Basic keybindings
    ("a" forward-char :exit t)
    ("A" move-end-of-line :exit t)
-   ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here))
-   ("B" kakoune-backward-same-syntax :first '(kakoune-set-mark-if-inactive))
+   ("b" backward-word :first '(kakoune-set-mark-here))
+   ("B" backward-word :first '(kakoune-set-mark-if-inactive))
    ("c" kakoune-d :exit t)
    ("C" kill-line :exit t)
    ("d" kakoune-d)
@@ -72,8 +78,8 @@
    ("R" kakoune-replace-selection)
    ("t" kakoune-select-up-to-char :first '(kakoune-set-mark-here))
    ("T" kakoune-select-up-to-char :first '(kakoune-set-mark-if-inactive))
-   ("w" forward-same-syntax :first '(kakoune-set-mark-here))
-   ("W" forward-same-syntax :first '(kakoune-set-mark-if-inactive))
+   ("w" forward-word :first '(kakoune-set-mark-here))
+   ("W" forward-word :first '(kakoune-set-mark-if-inactive))
    ("M-w" forward-symbol :first '(kakoune-set-mark-here))
    ("M-W" forward-symbol :first '(kakoune-set-mark-if-inactive))
    ("x" kakoune-x)
