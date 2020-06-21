@@ -16,6 +16,7 @@
 (require 'kakoune-utils)
 (require 'kakoune-exchange)
 (require 'kakoune-unimpaired)
+(require 'kakoune-shell-commands)
 (require 'cl-lib)
 (require 'ryo-modal)
 (require 'expand-region)
@@ -24,7 +25,6 @@
 ;;;###autoload
 (defun kakoune-setup-keybinds ()
   "Set up default kakoune keybindings for normal mode."
-  (interactive)
   (ryo-modal-major-mode-keys
    'prog-mode
    ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here))
@@ -50,7 +50,7 @@
          ("k" beginning-of-buffer)
          ("g" kakoune-gg)
          ("l" end-of-line)
-         ("i" back-to-indentation)) :first '(deactivate-mark))
+         ("i" back-to-indentation)) :first '(kakoune-deactivate-mark))
    ("G" (("h" beginning-of-line)
          ("j" end-of-buffer)
          ("k" beginning-of-buffer)
@@ -61,15 +61,15 @@
    ("G f" find-file-at-point)
    ("g x" kakoune-exchange)
    ("g X" kakoune-exchange-cancel)
-   ("h" backward-char :first '(deactivate-mark))
+   ("h" backward-char :first '(kakoune-deactivate-mark))
    ("H" backward-char :first '(kakoune-set-mark-if-inactive))
    ("i" kakoune-insert-mode)
    ("I" back-to-indentation :exit t)
-   ("j" next-line :first '(deactivate-mark))
+   ("j" next-line :first '(kakoune-deactivate-mark))
    ("J" next-line :first '(kakoune-set-mark-if-inactive))
-   ("k" previous-line :first '(deactivate-mark))
+   ("k" previous-line :first '(kakoune-deactivate-mark))
    ("K" previous-line :first '(kakoune-set-mark-if-inactive))
-   ("l" forward-char :first '(deactivate-mark))
+   ("l" forward-char :first '(kakoune-deactivate-mark))
    ("L" forward-char :first '(kakoune-set-mark-if-inactive))
    ("o" kakoune-o :exit t)
    ("O" kakoune-O :exit t)
@@ -93,20 +93,18 @@
    ("%" mark-whole-buffer)
    ("M-j" kakoune-join)
    ("[ [" backward-paragraph :first '(kakoune-set-mark-here))
-   ("{ [" backward-paragraph :first '(kakoune-set-mark-if-inactive))
    ("] ]" forward-paragraph :first '(kakoune-set-mark-here))
-   ("} ]" forward-paragraph :first '(kakoune-set-mark-if-inactive))
    (">" kakoune-indent-right)
    ("<" kakoune-indent-left)
 
    ;; Treat arrow keys the same as "hjkl"
-   ("<down>" next-line :first '(deactivate-mark))
+   ("<down>" next-line :first '(kakoune-deactivate-mark))
    ("<S-down>" next-line :first '(kakoune-set-mark-if-inactive))
-   ("<up>" previous-line :first '(deactivate-mark))
+   ("<up>" previous-line :first '(kakoune-deactivate-mark))
    ("<S-up>" previous-line :first '(kakoune-set-mark-if-inactive))
-   ("<right>" forward-char :first '(deactivate-mark))
+   ("<right>" forward-char :first '(kakoune-deactivate-mark))
    ("<S-right>" forward-char :first '(kakoune-set-mark-if-inactive))
-   ("<left>" backward-char :first '(deactivate-mark))
+   ("<left>" backward-char :first '(kakoune-deactivate-mark))
    ("<S-left>" backward-char :first '(kakoune-set-mark-if-inactive))
 
    ;; Numeric arguments
@@ -144,7 +142,11 @@
 
    ;; Multiple cursors
    ("s" mc/mark-all-in-region)
-   ("S" mc/split-region)))
+   ("S" mc/split-region)
+
+   ;; Shell commands
+   ("|" kakoune-shell-pipe)
+   ("!" kakoune-shell-command)))
 
 (provide 'kakoune)
 ;;; kakoune.el ends here

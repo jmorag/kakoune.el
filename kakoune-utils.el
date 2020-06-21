@@ -24,10 +24,9 @@
 (defun kakoune-deactivate-mark ()
   "Deactivate the mark.
 
-For some reason, just calling (deactivate-mark) inside of a (ryo-modal-keys
-call doesn't work."
+Deactivate the mark unless mark-region-mode is active."
   (interactive)
-  (deactivate-mark))
+  (unless rectangle-mark-mode (deactivate-mark)))
 
 (defun kakoune-backward-symbol (count)
   "Move backward COUNT times by symbol."
