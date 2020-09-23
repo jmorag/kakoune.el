@@ -25,12 +25,27 @@
 ;;;###autoload
 (defun kakoune-setup-keybinds ()
   "Set up default kakoune keybindings for normal mode."
-  (ryo-modal-major-mode-keys
-   'prog-mode
-   ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here))
-   ("B" kakoune-backward-same-syntax :first '(kakoune-set-mark-if-inactive))
-   ("w" forward-same-syntax :first '(kakoune-set-mark-here))
-   ("W" forward-same-syntax :first '(kakoune-set-mark-if-inactive)))
+  (global-subword-mode 1)
+  (eval-after-load "text-mode"
+    '(ryo-modal-major-mode-keys
+      'text-mode
+      ;; Region selectors
+      ("M-i" (("w" er/mark-word)
+              ("b" er/mark-inside-pairs)
+              ("'" er/mark-inside-quotes)
+              ("s" er/mark-text-sentence)
+              ("p" er/mark-text-paragraph)))
+      ("M-a" (("w" er/mark-symbol)
+              ("b" er/mark-outside-pairs)
+              ("'" er/mark-outside-quotes)
+              ("s" er/mark-text-sentence)
+              ("p" er/mark-text-paragraph)))))
+  ;; (ryo-modal-major-mode-keys
+  ;;  'prog-mode
+  ;;  ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here))
+  ;;  ("B" kakoune-backward-same-syntax :first '(kakoune-set-mark-if-inactive))
+  ;;  ("w" forward-same-syntax :first '(kakoune-set-mark-here))
+  ;;  ("W" forward-same-syntax :first '(kakoune-set-mark-if-inactive)))
   (ryo-modal-keys
    ;; Basic keybindings
    ("a" forward-char :exit t)
@@ -41,8 +56,6 @@
    ("C" kill-line :exit t)
    ("d" kakoune-d)
    ("D" kill-line)
-   ("e" forward-word :first '(kakoune-set-mark-here))
-   ("E" forward-word :first '(kakoune-set-mark-if-inactive))
    ("f" kakoune-select-to-char :first '(kakoune-set-mark-here))
    ("F" kakoune-select-to-char :first '(kakoune-set-mark-if-inactive))
    ("g" (("h" beginning-of-line)
@@ -127,18 +140,6 @@
    ("]" (("SPC" kakoune-insert-line-below)
          ("b" next-buffer)
          ("p" kakoune-paste-below)))
-
-   ;; Region selectors
-   ("M-i" (("w" er/mark-word)
-           ("b" er/mark-inside-pairs)
-           ("'" er/mark-inside-quotes)
-           ("s" er/mark-text-sentence)
-           ("p" er/mark-text-paragraph)))
-   ("M-a" (("w" er/mark-symbol)
-           ("b" er/mark-outside-pairs)
-           ("'" er/mark-outside-quotes)
-           ("s" er/mark-text-sentence)
-           ("p" er/mark-text-paragraph)))
 
    ;; Multiple cursors
    ("s" mc/mark-all-in-region)
