@@ -177,21 +177,21 @@ but I like this behavior better."
   "Indent the region or COUNT lines right to tab stop."
   (interactive "p")
   (if (use-region-p)
-      (progn (indent-rigidly-right-to-tab-stop (region-beginning) (region-end))
+      (progn (indent-rigidly (region-beginning) (region-end) 2)
              (setq deactivate-mark nil))
     (let ((beg (save-excursion (beginning-of-line) (point)))
           (end (save-excursion (forward-line count) (point))))
-      (indent-rigidly-right-to-tab-stop beg end))))
+      (indent-rigidly beg end 2))))
 
 (defun kakoune-indent-left (count)
   "Indent the region or COUNT lines left to tab stop."
   (interactive "p")
   (if (use-region-p)
-      (progn (indent-rigidly-left-to-tab-stop (region-beginning) (region-end))
+      (progn (indent-rigidly (region-beginning) (region-end) -2)
              (setq deactivate-mark nil))
     (let ((beg (save-excursion (beginning-of-line) (point)))
           (end (save-excursion (forward-line count) (point))))
-      (indent-rigidly-left-to-tab-stop beg end))))
+      (indent-rigidly beg end -2))))
 
 (defun kakoune-gg (count)
   "Go to the beginning of the buffer or the COUNTth line."
