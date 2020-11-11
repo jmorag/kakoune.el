@@ -30,6 +30,7 @@
     '(ryo-modal-major-mode-keys
       'text-mode
       ;; Region selectors
+      (:mc-all t)
       ("M-i" (("w" er/mark-word)
               ("b" er/mark-inside-pairs)
               ("'" er/mark-inside-quotes)
@@ -48,6 +49,7 @@
   ;;  ("W" forward-same-syntax :first '(kakoune-set-mark-if-inactive)))
   (ryo-modal-keys
    ;; Basic keybindings
+   (:mc-all t)
    ("a" forward-char :exit t)
    ("A" move-end-of-line :exit t)
    ("b" backward-word :first '(kakoune-set-mark-here))
@@ -135,10 +137,8 @@
 
    ;; Unimpaired-like functionality
    ("[" (("SPC" kakoune-insert-line-above)
-         ("b" previous-buffer)
          ("p" kakoune-paste-above)))
    ("]" (("SPC" kakoune-insert-line-below)
-         ("b" next-buffer)
          ("p" kakoune-paste-below)))
 
    ;; Multiple cursors
@@ -147,7 +147,12 @@
 
    ;; Shell commands
    ("|" kakoune-shell-pipe)
-   ("!" kakoune-shell-command)))
+   ("!" kakoune-shell-command))
+
+  ;; put these here because they shouldn't be repeated for all cursors
+  (ryo-modal-keys
+   ("[ b" previous-buffer)
+   ("] b" next-buffer)))
 
 (provide 'kakoune)
 ;;; kakoune.el ends here
