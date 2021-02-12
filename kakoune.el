@@ -3,7 +3,7 @@
 ;; Author: Joseph Morag <jm4157@columbia.edu>
 ;; Version: 0.1
 ;; URL: https://github.com/jmorag/kakoune.el
-;; Package-Requires: ((ryo-modal "0.4") (multiple-cursors "1.4") (expand-region "0.11.0") (emacs "25.1"))
+;; Package-Requires: ((ryo-modal "0.45") (multiple-cursors "1.4") (expand-region "0.11.0") (emacs "25.1"))
 ;; MIT License
 
 ;;; Commentary:
@@ -26,21 +26,15 @@
 (defun kakoune-setup-keybinds ()
   "Set up default kakoune keybindings for normal mode."
   (global-subword-mode 1)
-  (eval-after-load "text-mode"
-    '(ryo-modal-major-mode-keys
-      'text-mode
-      ;; Region selectors
-      (:mc-all t)
-      ("M-i" (("w" er/mark-word)
-              ("b" er/mark-inside-pairs)
-              ("'" er/mark-inside-quotes)
-              ("s" er/mark-text-sentence)
-              ("p" er/mark-text-paragraph)))
-      ("M-a" (("w" er/mark-symbol)
-              ("b" er/mark-outside-pairs)
-              ("'" er/mark-outside-quotes)
-              ("s" er/mark-text-sentence)
-              ("p" er/mark-text-paragraph)))))
+  (ryo-modal-keys
+   (:mc-all t)
+   ;; Region selectors
+   ("M-i" (("w" er/mark-word)
+           ("b" er/mark-inside-pairs)
+           ("'" er/mark-inside-quotes)))
+   ("M-a" (("w" er/mark-symbol)
+           ("b" er/mark-outside-pairs)
+           ("'" er/mark-outside-quotes))))
   ;; (ryo-modal-major-mode-keys
   ;;  'prog-mode
   ;;  ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here))
