@@ -35,12 +35,13 @@
    ("M-a" (("w" er/mark-symbol)
            ("b" er/mark-outside-pairs)
            ("'" er/mark-outside-quotes))))
+  ;; this works now but I've gotten used to not having it
   ;; (ryo-modal-major-mode-keys
   ;;  'prog-mode
-  ;;  ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here))
-  ;;  ("B" kakoune-backward-same-syntax :first '(kakoune-set-mark-if-inactive))
-  ;;  ("w" forward-same-syntax :first '(kakoune-set-mark-here))
-  ;;  ("W" forward-same-syntax :first '(kakoune-set-mark-if-inactive)))
+  ;;  ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here) :mc-all t)
+  ;;  ("B" kakoune-backward-same-syntax :first '(kakoune-set-mark-if-inactive) :mc-all t)
+  ;;  ("w" forward-same-syntax :first '(kakoune-set-mark-here) :mc-all t)
+  ;;  ("W" forward-same-syntax :first '(kakoune-set-mark-if-inactive) :mc-all t))
   (ryo-modal-keys
    ;; Basic keybindings
    (:mc-all t)
