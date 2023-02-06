@@ -185,13 +185,14 @@ layout to preserve muscle memory.
    ("M-a" (("w" er/mark-symbol)
            ("b" er/mark-outside-pairs)
            ("'" er/mark-outside-quotes))))
+  ;; Actually no, let's now
   ;; new layout, let's try this again.
-  (ryo-modal-major-mode-keys
-   'prog-mode
-   ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here) :mc-all t)
-   ("B" kakoune-backward-same-syntax :first '(kakoune-set-mark-if-inactive) :mc-all t)
-   ("w" forward-same-syntax :first '(kakoune-set-mark-here) :mc-all t)
-   ("W" forward-same-syntax :first '(kakoune-set-mark-if-inactive) :mc-all t))
+  ;; (ryo-modal-major-mode-keys
+  ;;  'prog-mode
+  ;;  ("b" kakoune-backward-same-syntax :first '(kakoune-set-mark-here) :mc-all t)
+  ;;  ("B" kakoune-backward-same-syntax :first '(kakoune-set-mark-if-inactive) :mc-all t)
+  ;;  ("w" forward-same-syntax :first '(kakoune-set-mark-here) :mc-all t)
+  ;;  ("W" forward-same-syntax :first '(kakoune-set-mark-if-inactive) :mc-all t))
   (ryo-modal-keys
    ;; Basic keybindings
    (:mc-all t)
